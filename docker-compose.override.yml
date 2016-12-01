@@ -1,0 +1,17 @@
+version: "2"
+services:
+  server:
+    environment:
+      DEBUG: "true"
+      LOGGING_HANDLER_LEVEL: DEBUG
+      LOGGING_LOGGER_LEVEL: DEBUG
+      DOMAIN_MAIN: pyserver.dev
+    volumes:
+      - ./:/app
+      - ~/data/projects/jw-pyserver/server:/data
+  mongodb:
+    volumes:
+      - ~/data/projects/jw-pyserver/mongodb:/data
+  redis:
+    volumes:
+      - ~/data/projects/jw-pyserver/redis:/data

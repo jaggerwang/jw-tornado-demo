@@ -1,0 +1,28 @@
+version: "2"
+services:
+  server:
+    image: daocloud.io/jaggerwang/jw-pyserver
+    environment:
+      DEBUG: "true"
+      LOGGING_HANDLER_LEVEL: DEBUG
+      LOGGING_LOGGER_LEVEL: DEBUG
+      DOMAIN_MAIN: pyserver.net
+    ports:
+      - 10500:8888
+    volumes:
+      - /data/jw-pyserver/server:/data
+    depends_on:
+      - mongodb
+      - redis
+  mongodb:
+    image: daocloud.io/jaggerwang/mongodb
+    ports:
+      - 10510:27017
+    volumes:
+      - /data/jw-pyserver/mongodb:/data
+  redis:
+    image: daocloud.io/jaggerwang/redis
+    ports:
+      - 10520:6379
+    volumes:
+      - /data/jw-pyserver/redis:/data
