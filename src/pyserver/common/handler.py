@@ -13,14 +13,13 @@ from .cache import PyserverCache
 from .const import *
 from .vo import jsonable
 
-logger = logging.getLogger('app')
-rlogger = logging.getLogger('request')
-
 
 class PyserverHandler(RequestHandler):
 
     def prepare(self):
         super().prepare()
+
+        logger = logging.getLogger('app')
 
         logger.debug("request: {}".format(
             (self.request.method, self.request.path, self.request.arguments,
@@ -50,6 +49,8 @@ class PyserverHandler(RequestHandler):
     @property
     def session(self):
         if not hasattr(self, '_session'):
+            logger = logging.getLogger('app')
+
             self._session = Session(self.session_store, self.sid)
             logger.debug("create session: {}".format(self.sid))
         return self._session
@@ -115,6 +116,8 @@ class PyserverHandler(RequestHandler):
         return self.response_json(CODE_SYSTEM_ERROR, message)
 
     def on_finish(self):
+        rlogger = logging.getLogger('request')
+
         rlogger.info(json.dumps(jsonable({
             'request_time': datetime.now(),
             'time_served': self.request.request_time(),

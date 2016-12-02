@@ -10,6 +10,7 @@ ENV PYTHONPATH=/root/jw-pylib/src:$PYTHONPATH
 ADD . $APP_PATH
 WORKDIR $APP_PATH
 RUN pip3 install -r requirements.txt
+ENV PYTHONPATH=$APP_PATH/src:$PYTHONPATH
 
 VOLUME $DATA_PATH
 

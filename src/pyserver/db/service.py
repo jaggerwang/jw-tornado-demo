@@ -6,11 +6,10 @@ from bson import ObjectId
 from pyserver.common.model import get_mongo_database
 from .mongodbindex import MONGODB_INDEXES
 
-logger = logging.getLogger('app')
-
 
 def create_mongodb_index(db_alias, coll=None, drop_indexes=False,
                          background=False, drop_dups=False):
+    logger = logging.getLogger('app')
     indexes = MONGODB_INDEXES
 
     if db_alias is None and coll is not None:

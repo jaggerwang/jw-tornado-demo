@@ -1,5 +1,4 @@
 import re
-import logging
 
 from pymongo.errors import DuplicateKeyError
 from pymongo import ASCENDING, DESCENDING
@@ -13,8 +12,6 @@ from pyserver.common.const import *
 from .model import *
 from .cache import *
 from .const import *
-
-logger = logging.getLogger('app')
 
 
 def register_user(username, password, nick, gender, avatar_id=None,
