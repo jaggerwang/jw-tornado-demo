@@ -26,9 +26,17 @@ The data and log of server, mongodb and redis will be saved at host's directory 
 **build image of your own**
 
 ```
-> git clone git@github.com:jaggerwang/jw-pyserver.git && cd jw-pyserver
+> cd jw-pyserver
 > ./docker-build.sh
 ```
+
+**create mongodb index**
+
+```
+> cd jw-pyserver
+> docker-compose -p jw-pyserver exec server ./src/manage.py create-mongodb-index
+```
+When deploy, it will auto run this command to create mongodb index. So normally you do not need to do this by your own.
 
 ### API
 
