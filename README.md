@@ -55,7 +55,7 @@ When deploy, it will auto run this command to create mongodb index. So normally 
 
 ### API
 
-The server container exposed port 1323, and it mapped to port 10400 of the host. So you can use domain "http://localhost:10400" to access the following api.
+The server container exposed port 8888, and it mapped to port 10500 of the host. So you can use domain "http://localhost:10500" to access the following api.
 
 Path|Method|Description
 ----|------|-----------
@@ -65,8 +65,6 @@ Path|Method|Description
 /logout|GET|Logout.
 /account/edit|POST|Edit account profile.
 /account/info|GET|Get current account info.
-/user/info|GET|Get user info by id.
-/user/infos|GET|Get user info by ids.
 
 ### FAQ
 
