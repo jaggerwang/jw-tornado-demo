@@ -45,6 +45,34 @@ The data and log of server, mongodb and redis will be saved at host's path "/dat
 > ./docker-build.sh
 ```
 
+### Command
+
+**help**
+
+```
+> cd jw-pyserver
+> docker-compose -p jw-pyserver exec server ./src/manage.py -h
+usage: pyserver (sub-commands ...) [options ...] {arguments ...}
+
+Pyserver admin console.
+
+commands:
+
+  create-mongodb-index
+    Create mongodb index.
+
+  default
+
+  test
+    Run unittest.
+
+optional arguments:
+  -h, --help  show this help message and exit
+  --debug     toggle debug output
+  --quiet     suppress all output
+  -t, --test  init test environment
+```
+
 **create mongodb index**
 
 ```
@@ -52,6 +80,19 @@ The data and log of server, mongodb and redis will be saved at host's path "/dat
 > docker-compose -p jw-pyserver exec server ./src/manage.py create-mongodb-index
 ```
 When deploy, it will auto run this command to create mongodb index. So normally you do not need to do this by your own.
+
+**run unittest**
+
+```
+> cd jw-pyserver
+> docker-compose -p jw-pyserver exec server ./src/manage.py test
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.036s
+
+OK
+```
+The test will run on a new db on the same instance, it's name prefixed 'test\_' to the origin, and using redis cache db no 16.
 
 ### API
 
