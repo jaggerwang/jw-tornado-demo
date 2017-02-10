@@ -11,7 +11,7 @@ MONGODB = {
         'w': 1,
         'wtimeout': 10000,
         'j': False,
-        'name': "pyserver",
+        'name': 'pyserver',
         'auth': None,
         'replicaSet': None,
         'read_preference': ReadPreference.PRIMARY,

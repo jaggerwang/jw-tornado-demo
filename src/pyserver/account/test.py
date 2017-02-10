@@ -9,10 +9,10 @@ class TestService(PyserverTestCase):
     @property
     def user(self):
         return {
-            'username': "jaggerwang",
-            'password': "123456",
-            'nickname': "jag",
-            'gender': "m",
+            'username': 'jaggerwang',
+            'password': '123456',
+            'nickname': 'jag',
+            'gender': 'm',
         }
 
     def test_register_user(self):
@@ -22,7 +22,7 @@ class TestService(PyserverTestCase):
     def test_edit_user(self):
         user, error = register_user(**self.user)
 
-        nickname = "wjj"
+        nickname = 'wjj'
         user, error = edit_user(user['_id'], {'nickname': nickname})
         self.assertIsNone(error)
         self.assertEqual(user['nickname'], nickname)
@@ -44,11 +44,11 @@ class TestService(PyserverTestCase):
     def test_user_list(self):
         user = self.user
         register_user(**user)
-        user['username'] = "jaggerwang1"
-        user['nickname'] = "jag1"
+        user['username'] = 'jaggerwang1'
+        user['nickname'] = 'jag1'
         register_user(**user)
-        user['username'] = "jaggerwang2"
-        user['nickname'] = "jag2"
+        user['username'] = 'jaggerwang2'
+        user['nickname'] = 'jag2'
         register_user(**user)
 
         users, total = user_list(limit=1)
@@ -58,10 +58,10 @@ class TestService(PyserverTestCase):
     def test_verify_password(self):
         register_user(**self.user)
 
-        user, error = verify_password(self.user['username'], "")
+        user, error = verify_password(self.user['username'], '')
         self.assertIsNotNone(error)
 
         user, error = verify_password(
-            self.user['username'], self.user["password"]
+            self.user['username'], self.user['password']
         )
         self.assertIsNone(error)

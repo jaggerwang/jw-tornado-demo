@@ -9,6 +9,7 @@ from pylib.form.validator import *
 from pyserver.common.auth import authenticated
 from pyserver.common.handler import PyserverHandler
 from pyserver.common.error import *
+from .const import *
 from .service import *
 from .vo import *
 
@@ -27,10 +28,10 @@ class RegisterUserHandler(PyserverHandler):
         form = RegisterUserForm(self.request.arguments)
         if not form.validate():
             return self.response_json(
-                Error(ERROR_CODE_PARAM_WRONG, json.dump(form.errors))
+                Error(ERROR_CODE_PARAM_WRONG, json.dumps(form.errors))
             )
 
-        if not re.match(r"[a-z][a-z0-9_]{2,19}$", form.data['username'],
+        if not re.match(r'[a-z][a-z0-9_]{2,19}$', form.data['username'],
                         re.IGNORECASE):
             return self.response_json(Error(ERROR_CODE_PARAM_WRONG))
 
@@ -53,7 +54,7 @@ class EditUserHandler(PyserverHandler):
         form = EditUserForm(self.request.arguments)
         if not form.validate():
             return self.response_json(
-                Error(ERROR_CODE_PARAM_WRONG, json.dump(form.errors))
+                Error(ERROR_CODE_PARAM_WRONG, json.dumps(form.errors))
             )
 
         user, error = edit_user(self.current_user_id, form.data)
@@ -85,7 +86,7 @@ class LoginHandler(PyserverHandler):
         form = LoginForm(self.request.arguments)
         if not form.validate():
             return self.response_json(
-                Error(ERROR_CODE_PARAM_WRONG, json.dump(form.errors))
+                Error(ERROR_CODE_PARAM_WRONG, json.dumps(form.errors))
             )
 
         user, error = verify_password(

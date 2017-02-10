@@ -37,7 +37,7 @@ class PyserverMongoModel(Collection):
             })
 
     def create(self, doc_or_docs):
-        """插入文档
+        '''插入文档
         相比于MongoDB原生的insert，增加了none值字段过滤和模型字段验证。
 
         :Parameters:
@@ -45,7 +45,7 @@ class PyserverMongoModel(Collection):
 
         :Returns:
           - 同原生insert接口
-        """
+        '''
         if isinstance(doc_or_docs, dict):
             self._filter_none_value(doc_or_docs)
             self._validate(doc_or_docs)
@@ -66,12 +66,12 @@ class PyserverMongoModel(Collection):
 
     def modify(self, spec, document, multi=False, upsert=False, validate=True,
                sort=None, return_document=None):
-        """部分更新文档
+        '''部分更新文档
         只更新置顶字段的值，如果值为空字符串则表示删除该字段，未指定的字段值保持不变
 
         :Parameters:
           - `spec`: ``dict``，更新条件
-          - `document`: ``dict``，要更新的字段和值，如果字段值为""，则删除该字段，
+          - `document`: ``dict``，要更新的字段和值，如果字段值为''，则删除该字段，
           字段值为None或不在document里的字段保持不变
           - `multi`: ``bool``，更新所有匹配文档还是仅第一个
           - `upsert`: ``bool``，没有匹配文档时是否插入
@@ -81,10 +81,10 @@ class PyserverMongoModel(Collection):
 
         :Returns:
           - 更新的文档个数
-        """
+        '''
         self._filter_none_value(document)
-        set_fields = {k: v for k, v in document.items() if v != ""}
-        unset_fields = {k: v for k, v in document.items() if v == ""}
+        set_fields = {k: v for k, v in document.items() if v != ''}
+        unset_fields = {k: v for k, v in document.items() if v == ''}
         if validate:
             self._validate(set_fields, False)
 
@@ -125,7 +125,7 @@ class PyserverMongoModel(Collection):
     @staticmethod
     def _filter_none_value(doc):
         if not isinstance(doc, dict):
-            raise Error(message="doc should be a dict")
+            raise Error(message='doc should be a dict')
 
         for k, v in list(doc.items()):
             if v is None:
@@ -143,16 +143,16 @@ class PyserverMongoModel(Collection):
                 continue
 
             if k not in cls._fields:
-                raise Error(message="unexpected field '{}'".format(k))
+                raise Error(message='unexpected field {}'.format(k))
 
             type_, _ = cls._fields[k]
             if type_ is not None and not isinstance(v, type_):
                 raise Error(
-                    message="field '{}' should be a '{}'".format(k, type_)
+                    message='field {} should be a {}'.format(k, type_)
                 )
 
         if required:
             fields = [k for k, v in cls._fields.items() if v[1]]
             for v in fields:
                 if v not in doc:
-                    raise Error(message="field '{}' is required".format(v))
+                    raise Error(message='field {} is required'.format(v))

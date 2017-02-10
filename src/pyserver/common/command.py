@@ -14,11 +14,11 @@ from pyserver.config.cache import REDIS
 class PyserverController(controller.CementBaseController):
 
     class Meta:
-        label = "base"
-        description = "Pyserver admin console."
+        label = 'base'
+        description = 'Pyserver admin console.'
         arguments = [
-            (["-t", "--test"], dict(action="store_true",
-                                    help="init test environment"))
+            (['-t', '--test'], dict(action='store_true',
+                                    help='init test environment'))
         ]
 
     @controller.expose()
@@ -29,12 +29,12 @@ class PyserverController(controller.CementBaseController):
         namespace = globals()
         namespace.update(locals())
         readline.set_completer(rlcompleter.Completer(namespace).complete)
-        readline.parse_and_bind("tab: complete")
+        readline.parse_and_bind('tab: complete')
         code.interact(local=namespace)
 
     def _init_test_env(self):
         for _, configs in MONGODB.items():
-            configs['name'] = "test_{}".format(configs['name'])
+            configs['name'] = 'test_{}'.format(configs['name'])
 
         for _, configs in REDIS.items():
             configs['db'] = 15
@@ -43,13 +43,13 @@ class PyserverController(controller.CementBaseController):
 class TestController(PyserverController):
 
     class Meta:
-        label = "test"
-        stacked_on = "base"
-        stacked_type = "nested"
-        description = "Run unittest."
+        label = 'test'
+        stacked_on = 'base'
+        stacked_type = 'nested'
+        description = 'Run unittest.'
         arguments = [
-            (["name"], dict(nargs="*",
-                            help="name of tests to run"))
+            (['name'], dict(nargs='*',
+                            help='name of tests to run'))
         ]
 
     @controller.expose()
@@ -66,4 +66,4 @@ class TestController(PyserverController):
 
         result = unittest.TextTestRunner().run(suite)
         if not result.wasSuccessful():
-            sys.exit("run test failed")
+            sys.exit('run test failed')

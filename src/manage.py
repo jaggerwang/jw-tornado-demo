@@ -19,11 +19,11 @@ from pyserver.config.log import LOGGING
 class PyserverApp(foundation.CementApp):
 
     class Meta:
-        label = "pyserver"
+        label = 'pyserver'
         base_controller = PyserverController
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     logging.config.dictConfig(LOGGING)
 
     clogger = logging.getLogger('command')
@@ -31,7 +31,7 @@ if __name__ == "__main__":
     with PyserverApp() as app:
         for module in ['.'.join(
             re.fullmatch(SRC_PATH + '/(.+)\.py', v).group(1).split('/')
-        ) for v in glob(os.path.join(SRC_PATH, "pyserver/*/command.py"))]:
+        ) for v in glob(os.path.join(SRC_PATH, 'pyserver/*/command.py'))]:
             module = importlib.import_module(module)
             commands = [
                 v[1] for v in inspect.getmembers(module, inspect.isclass)
@@ -44,6 +44,6 @@ if __name__ == "__main__":
         try:
             app.run()
         except CaughtSignal as e:
-            clogger.info("caught signal: {}".format(e))
+            clogger.info('caught signal: {}'.format(e))
         except Exception:
             traceback.print_exc()

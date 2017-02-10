@@ -3,10 +3,10 @@ services:
   server:
     image: daocloud.io/jaggerwang/jw-pyserver
     environment:
-      DEBUG: "true"
-      LOGGING_HANDLER_LEVEL: DEBUG
-      LOGGING_LOGGER_LEVEL: DEBUG
-      DOMAIN_MAIN: pyserver.net
+      JWPY_ENV: production
+      JWPY_DEBUG: "false"
+      JWPY_LOGGING_HANDLER_LEVEL: INFO
+      JWPY_LOGGING_LOGGER_LEVEL: INFO
     ports:
       - 10500:8888
     volumes:

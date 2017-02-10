@@ -2,10 +2,10 @@ version: "2"
 services:
   server:
     environment:
-      DEBUG: "true"
-      LOGGING_HANDLER_LEVEL: DEBUG
-      LOGGING_LOGGER_LEVEL: DEBUG
-      DOMAIN_MAIN: pyserver.dev
+      JWPY_ENV: development
+      JWPY_DEBUG: "true"
+      JWPY_LOGGING_HANDLER_LEVEL: DEBUG
+      JWPY_LOGGING_LOGGER_LEVEL: DEBUG
     volumes:
       - ./:/app
       - ~/data/projects/jw-pyserver/server:/data

@@ -9,24 +9,24 @@ from .service import *
 class CreateMongoDBIndexController(PyserverController):
 
     class Meta:
-        label = "create_mongodb_index"
-        stacked_on = "base"
-        stacked_type = "nested"
-        description = "Create mongodb index."
+        label = 'create_mongodb_index'
+        stacked_on = 'base'
+        stacked_type = 'nested'
+        description = 'Create mongodb index.'
         arguments = [
-            (["-d", "--db_alias"], dict(
-                help="database connection alias")),
-            (["-c", "--coll"], dict(
-                help="collection name")),
-            (["-b", "--background"], dict(
+            (['-d', '--db_alias'], dict(
+                help='database connection alias')),
+            (['-c', '--coll'], dict(
+                help='collection name')),
+            (['-b', '--background'], dict(
                 action='store_true',
-                help="run in background.")),
-            (["--drop_indexes"], dict(
-                action="store_true",
-                help="drop collection indexes before creation")),
-            (["--drop_dups"], dict(
+                help='run in background.')),
+            (['--drop_indexes'], dict(
                 action='store_true',
-                help="drop duplicate docs")),
+                help='drop collection indexes before creation')),
+            (['--drop_dups'], dict(
+                action='store_true',
+                help='drop duplicate docs')),
         ]
 
     @controller.expose()

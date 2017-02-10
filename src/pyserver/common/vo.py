@@ -51,9 +51,9 @@ def jsonable(data, reserve_none=False):
                     for k, v in data.items()
                     if v is not None or reserve_none}
     elif isinstance(data, datetime):
-        return data.strftime("%Y-%m-%d %H:%M:%S")
+        return data.strftime('%Y-%m-%d %H:%M:%S')
     elif isinstance(data, date):
-        return data.strftime("%Y-%m-%d")
+        return data.strftime('%Y-%m-%d')
     elif isinstance(data, ObjectId):
         return str(data)
     else:

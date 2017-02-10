@@ -1,34 +1,30 @@
 import os
 from distutils.util import strtobool
 
-DEBUG = strtobool(os.getenv('DEBUG', 'false'))
+DEBUG = strtobool(os.getenv('JWPY_DEBUG', 'false'))
 
-PROJECT_PATH = "/app"
-SRC_PATH = os.path.join(PROJECT_PATH, "src")
-STATIC_PATH = os.path.join(PROJECT_PATH, "static")
+PROJECT_PATH = '/app'
+SRC_PATH = os.path.join(PROJECT_PATH, 'src')
+STATIC_PATH = os.path.join(PROJECT_PATH, 'static')
 
-DATA_PATH = "/data"
+DATA_PATH = '/data'
 LOG_PATH = DATA_PATH
-UPLOAD_PATH = os.path.join(DATA_PATH, "upload")
+UPLOAD_PATH = os.path.join(DATA_PATH, 'upload')
 
-DOMAIN_MAIN = os.getenv('DOMAIN_MAIN')
-DOMAIN_STATIC = "static.{}".format(os.getenv('DOMAIN_MAIN'))
-DOMAIN_API = "api.{}".format(os.getenv('DOMAIN_MAIN'))
-
-LOGGING_HANDLER_LEVEL = os.getenv('LOGGING_HANDLER_LEVEL')
-LOGGING_LOGGER_LEVEL = os.getenv('LOGGING_LOGGER_LEVEL')
+LOGGING_HANDLER_LEVEL = os.getenv('JWPY_LOGGING_HANDLER_LEVEL')
+LOGGING_LOGGER_LEVEL = os.getenv('JWPY_LOGGING_LOGGER_LEVEL')
 
 SETTINGS = {
-    'debug': os.getenv('DEBUG'),
+    'debug': DEBUG,
     'gzip': False,
-    'cookie_secret': "4zi7D1)uw6VJ&Iz5@924y28Z@3@M3p!H",
-    'login_url': "/login",
+    'cookie_secret': '4zi7D1)uw6VJ&Iz5@924y28Z@3@M3p!H',
+    'login_url': '/login',
     'static_path': STATIC_PATH
 }
 
 SESSION = {
-    'key_prefix': "session",
-    'cookie_name': "SID",
+    'key_prefix': 'session',
+    'cookie_name': 'SID',
     'cookie_options': {
         'expires_days': 7
     }

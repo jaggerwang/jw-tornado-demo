@@ -13,7 +13,7 @@ def create_mongodb_index(db_alias, coll=None, drop_indexes=False,
     indexes = MONGODB_INDEXES
 
     if db_alias is None and coll is not None:
-        logger.error("db connection alias needed when specify coll")
+        logger.error('db connection alias needed when specify coll')
         return False
 
     if db_alias is not None:
@@ -26,17 +26,17 @@ def create_mongodb_index(db_alias, coll=None, drop_indexes=False,
 
     for db_alias, colls in indexes.items():
         db = get_mongo_database(db_alias)
-        logger.info("begin process db {} ...".format(db.name))
+        logger.info('begin process db {} ...'.format(db.name))
 
         for coll, coll_indexes in colls.items():
             coll = db[coll]
             logger.info(
-                "  begin process collection {} ...".format(coll.name))
+                '  begin process collection {} ...'.format(coll.name))
 
             if drop_indexes:
-                logger.info("    begin drop indexes ...")
+                logger.info('    begin drop indexes ...')
                 coll.drop_indexes()
-                logger.info("    end drop indexes")
+                logger.info('    end drop indexes')
 
             for index in coll_indexes:
                 keys = index[0]
@@ -50,7 +50,7 @@ def create_mongodb_index(db_alias, coll=None, drop_indexes=False,
                             keys, **index_options)
                     except Exception as e:
                         m = re.match(
-                            r"exception: E11000 duplicate key error collection: .+ (.+) dup key: { (.+) }", str(e))
+                            r'exception: E11000 duplicate key error collection: .+ (.+) dup key: { (.+) }', str(e))
                         if m and drop_dups:
                             index_keys = m.group(1).rstrip('_1').rstrip(
                                 '_-1').replace('_1_', ' ').replace(
@@ -60,31 +60,31 @@ def create_mongodb_index(db_alias, coll=None, drop_indexes=False,
                                 v = v.lstrip(': ')
                                 if v.startswith('ObjectId'):
                                     v = ObjectId(
-                                        re.match(r"ObjectId\('(.+)'\)", v).group(1))
-                                elif v.startswith('"'):
-                                    v = v.strip('"')
-                                elif re.match(r"\d+", v):
+                                        re.match(r'ObjectId\(\'(.+)\'\)', v).group(1))
+                                elif v.startswith('\''):
+                                    v = v.strip('\'')
+                                elif re.match(r'\d+', v):
                                     v = int(v)
                                 index_values.append(v)
                             query = {
                                 k: v for k, v in zip(index_keys, index_values)}
                             logger.info(
-                                "duplicate docs: {}".format(list(coll.find(query))))
+                                'duplicate docs: {}'.format(list(coll.find(query))))
                             coll.delete_many(query)
                             logger.info(
-                                "droped duplicate doc: {}".format((query)))
+                                'droped duplicate doc: {}'.format((query)))
                             continue
-                        logger.error("create index failed: {}".format(e))
+                        logger.error('create index failed: {}'.format(e))
                         break
                     if index_name is not None:
                         logger.info(
-                            "    created index {}".format(index_name))
+                            '    created index {}'.format(index_name))
                     else:
                         logger.info(
-                            "    index {} already exists".format(keys))
+                            '    index {} already exists'.format(keys))
                     break
 
             logger.info(
-                "  end process collection {}".format(coll.name))
+                '  end process collection {}'.format(coll.name))
 
-        logger.info("end process db {}".format(db.name))
+        logger.info('end process db {}'.format(db.name))

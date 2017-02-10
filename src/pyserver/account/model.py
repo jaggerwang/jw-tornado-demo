@@ -11,4 +11,4 @@ class UserModel(PyserverMongoModel):
     }
 
     def __init__(self, **kwargs):
-        super().__init__(get_mongo_database("default"), "user", **kwargs)
+        super().__init__(get_mongo_database('default'), 'user', **kwargs)

@@ -42,7 +42,7 @@ def edit_user(id, doc):
             doc['password'], user['salt'])
 
     try:
-        UserModel().modify({"_id": id}, doc)
+        UserModel().modify({'_id': id}, doc)
     except DuplicateKeyError:
         return None, ServiceError(ERROR_CODE_RESOURCE_DUPLICATED)
 
@@ -57,24 +57,24 @@ def user_info_by_username(username):
     return UserModel().find_one({'username': username})
 
 
-def user_list(keyword=None, skip=0, limit=10, sort="create_time_desc"):
+def user_list(keyword=None, skip=0, limit=10, sort='create_time_desc'):
     spec = {}
     if keyword is not None:
         spec['nickname'] = {
-            '$regex': r"\s*".join(re.sub(r"\s+", "", keyword)),
-            '$options': "i"
+            '$regex': r'\s*'.join(re.sub(r'\s+', '', keyword)),
+            '$options': 'i'
         }
     spec = spec or None
 
     s = []
-    if sort == "create_time_desc":
-        s.append(("create_time", DESCENDING))
-    elif sort == "create_time_asc":
-        s.append(("create_time", ASCENDING))
-    elif sort == "nickname_asc":
-        s.append(("nickname", ASCENDING))
-    elif sort == "nickname_desc":
-        s.append(("nickname", DESCENDING))
+    if sort == 'create_time_desc':
+        s.append(('create_time', DESCENDING))
+    elif sort == 'create_time_asc':
+        s.append(('create_time', ASCENDING))
+    elif sort == 'nickname_asc':
+        s.append(('nickname', ASCENDING))
+    elif sort == 'nickname_desc':
+        s.append(('nickname', DESCENDING))
     s = s or None
 
     cursor = UserModel().find(spec, skip=skip, limit=limit, sort=s)
