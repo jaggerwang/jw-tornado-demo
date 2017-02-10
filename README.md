@@ -1,27 +1,42 @@
 # Jw-pyserver
 
-An api server demo, which write in python, and deploy by docker.
+An python api server starter kit, deploy using docker.
+
+### Packages
+
+|Package|Description|
+|-------|-----------|
+|[tornado](https://github.com/tornadoweb/tornado)|Http server and framework.|
+|[WTForms](https://github.com/wtforms/wtforms)|Validate form values.|
+|[cement](https://github.com/datafolklabs/cement)|CLI app framework.|
+|[requests](https://github.com/kennethreitz/requests)|Http request.|
+|[pymongo](https://github.com/mongodb/mongo-python-driver)|Mongodb driver.|
+|[redis](https://github.com/andymccurdy/redis-py)|Redis driver.|
 
 ### How to deploy
 
-**run in prod mode**
-
-Of course you should install docker engine first.
-```
-> git clone git@github.com:jaggerwang/jw-pyserver.git && cd jw-pyserver
-> ./deploy-prod.sh
-```
-The deploy script use docker-compose to run all needed containers, including server, mongodb and redis.  
-The data and log of server, mongodb and redis will be saved at host's directory "/data/jw-pyserver", which mounted at container's path "/data". You can change the data dir to your own, but the same change should be made to docker-compose file.
+You need install [docker engine](https://docs.docker.com/engine/installation/) first.
 
 **run in dev mode with auto detecting code changing**
 
 ```
 > git clone git@github.com:jaggerwang/jw-pyserver.git && cd jw-pyserver
-> ./deploy.sh
-> ./fswatch.sh # fswatch command needed, you can use brew to install it on macOS
+> mkdir -p ~/data/projects/jw-pyserver # create directory for data volumes
+> ./deploy.sh # pull images and run containers
+> ./fswatch.sh # watching code change, fswatch needed
 ```
-The data and log of server, mongodb and redis will be saved at host's directory "~/data/projects/jw-pyserver/server", which mounted at container's path "/data". You can change the data dir to your own, but the same change should be made to docker-compose file.
+
+The data and log of server, mongodb and redis will be saved at host's path "~/data/projects/jw-pyserver", which mounted at container's path "/data".
+
+**run in prod mode**
+
+```
+> git clone git@github.com:jaggerwang/jw-pyserver.git && cd jw-pyserver
+> mkdir -p /data/jw-pyserver # create directory for data volumes
+> ./deploy-prod.sh
+```
+
+The data and log of server, mongodb and redis will be saved at host's path "/data/jw-pyserver", which mounted at container's path "/data".
 
 **build image of your own**
 
@@ -40,7 +55,7 @@ When deploy, it will auto run this command to create mongodb index. So normally 
 
 ### API
 
-The server container exposed port 8888, and it mapped to port 10500 of the host. The domain used by cookie is pyserver.dev(in dev mode) or pyserver.net(in prod mode), Which configured in file "src/pyserver/config/main.py". So you can use domain "http://pyserver.dev:10500" to access the following api in dev mode.
+The server container exposed port 1323, and it mapped to port 10400 of the host. So you can use domain "http://localhost:10400" to access the following api.
 
 Path|Method|Description
 ----|------|-----------
@@ -50,9 +65,8 @@ Path|Method|Description
 /logout|GET|Logout.
 /account/edit|POST|Edit account profile.
 /account/info|GET|Get current account info.
-/file/upload|POST|Upload file, saved on local disk.
-/file/info|GET|Get uploaded file info by id.
-/upload/a.jpg|GET|Access uploaded file. The path can be found in the response of file upload api.
+/user/info|GET|Get user info by id.
+/user/infos|GET|Get user info by ids.
 
 ### FAQ
 
@@ -60,7 +74,7 @@ Path|Method|Description
 
 > Search and replace all "daocloud.io/jaggerwang/jw-pyserver" to your own.
 
-**How can I build the base images of this project, including python, mongodb and redis?**
+**How can I build the base images of this project, including go, mongodb and redis?**
 
 > The dockerfiles of the base images can be found at "https://github.com/jaggerwang/jw-dockerfiles".
 
