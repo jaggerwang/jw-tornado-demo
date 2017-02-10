@@ -8,14 +8,12 @@ import pylib.type
 import pylib.string
 
 from pyserver.config.main import *
-from pyserver.common.const import *
+from pyserver.common.error import *
 from .model import *
 from .cache import *
-from .const import *
 
 
-def register_user(username, password, nick, gender, avatar_id=None,
-                  intro=None):
+def register_user(username, password, nickname, gender):
     salt = pylib.string.random_string(8)
     password = pylib.security.password_hash(password, salt)
 
@@ -23,23 +21,21 @@ def register_user(username, password, nick, gender, avatar_id=None,
         'username': username,
         'password': password,
         'salt': salt,
-        'nick': nick,
-        'gender': gender,
-        'avatar_id': avatar_id,
-        'intro': intro
+        'nickname': nickname,
+        'gender': gender
     }
     try:
         id = UserModel().create(doc)
     except DuplicateKeyError:
-        return CODE_RESOURCE_DUPLICATED, None
+        return None, ServiceError(ERROR_CODE_RESOURCE_DUPLICATED)
 
-    return CODE_OK, user_info(id)
+    return user_info(id), None
 
 
 def edit_user(id, doc):
     user = UserModel().find_one(id)
     if user is None:
-        return CODE_RESOURCE_NOT_FOUND
+        return None, ServiceError(ERROR_CODE_RESOURCE_NOT_FOUND)
 
     if doc.get('password') is not None:
         doc['password'] = pylib.security.password_hash(
@@ -48,9 +44,9 @@ def edit_user(id, doc):
     try:
         UserModel().modify({"_id": id}, doc)
     except DuplicateKeyError:
-        return CODE_RESOURCE_DUPLICATED
+        return None, ServiceError(ERROR_CODE_RESOURCE_DUPLICATED)
 
-    return CODE_OK
+    return user_info(id), None
 
 
 def user_info(id):
@@ -64,8 +60,10 @@ def user_info_by_username(username):
 def user_list(keyword=None, skip=0, limit=10, sort="create_time_desc"):
     spec = {}
     if keyword is not None:
-        spec['nick'] = {'$regex': r"\s*".join(re.sub(r"\s+", "", keyword)),
-                        '$options': "i"}
+        spec['nickname'] = {
+            '$regex': r"\s*".join(re.sub(r"\s+", "", keyword)),
+            '$options': "i"
+        }
     spec = spec or None
 
     s = []
@@ -73,10 +71,10 @@ def user_list(keyword=None, skip=0, limit=10, sort="create_time_desc"):
         s.append(("create_time", DESCENDING))
     elif sort == "create_time_asc":
         s.append(("create_time", ASCENDING))
-    elif sort == "nick_asc":
-        s.append(("nick", ASCENDING))
-    elif sort == "nick_desc":
-        s.append(("nick", DESCENDING))
+    elif sort == "nickname_asc":
+        s.append(("nickname", ASCENDING))
+    elif sort == "nickname_desc":
+        s.append(("nickname", DESCENDING))
     s = s or None
 
     cursor = UserModel().find(spec, skip=skip, limit=limit, sort=s)
@@ -87,10 +85,10 @@ def user_list(keyword=None, skip=0, limit=10, sort="create_time_desc"):
 def verify_password(username, password):
     user = UserModel().find_one({'username': username})
     if user is None:
-        return CODE_RESOURCE_NOT_FOUND, None
+        return None, ServiceError(ERROR_CODE_RESOURCE_NOT_FOUND)
 
     password = pylib.security.password_hash(password, user['salt'])
     if password == user['password']:
-        return CODE_OK, user
+        return user, None
     else:
-        return CODE_USER_PASSWORD_WRONG, None
+        return None, ServiceError(ERROR_CODE_USER_PASSWORD_WRONG)

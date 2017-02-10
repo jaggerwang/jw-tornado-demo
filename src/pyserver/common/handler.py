@@ -2,6 +2,7 @@ import traceback
 import re
 import json
 from datetime import datetime
+import logging
 
 from tornado.web import RequestHandler
 
@@ -10,7 +11,7 @@ from pylib.session import RedisSessionStore, Session
 from pyserver.account.service import *
 from pyserver.config.main import *
 from .cache import PyserverCache
-from .const import *
+from .error import *
 from .vo import jsonable
 
 
@@ -68,14 +69,17 @@ class PyserverHandler(RequestHandler):
     def current_user_id(self):
         return self.current_user['_id'] if self.current_user else None
 
-    def response_json(self, code=CODE_OK, message=None, status_code=200,
-                      **kwargs):
-        message = message or MESSAGES.get(code, "")
+    def response_json(self, error=None, status_code=200, **kwargs):
         data = {
-            "code": code,
-            "message": (message if isinstance(message, str) else
-                        json.dumps(message))
+            "code": ERROR_CODE_OK,
+            "message": ""
         }
+        if error:
+            data["code"] = error.code
+            data["message"] = (
+                error.message if SETTINGS['debug'] else
+                MESSAGES.get(error.code, "")
+            )
         data.update(kwargs)
 
         ua = self.request.headers.get('User-Agent', "")
@@ -88,14 +92,17 @@ class PyserverHandler(RequestHandler):
             ensure_ascii=False)
         self.response(content, content_type, status_code)
 
-    def response_html(self, template, code=CODE_OK, message=None,
-                      status_code=200, **kwargs):
-        message = message or MESSAGES.get(code, "")
+    def response_html(self, template, error=None, status_code=200, **kwargs):
         data = {
-            "code": code,
-            "message": (message if isinstance(message, str) else
-                        json.dumps(message))
+            "code": ERROR_CODE_OK,
+            "message": ""
         }
+        if error:
+            data["code"] = error.code
+            data["message"] = (
+                error.message if SETTINGS['debug'] else
+                MESSAGES.get(error.code, "")
+            )
         data.update(kwargs)
 
         content = self.render_string(template, **data)
@@ -112,8 +119,9 @@ class PyserverHandler(RequestHandler):
             message = traceback.format_exception(*kwargs["exc_info"])
         else:
             message = self._reason
+        error = Error(message)
 
-        return self.response_json(CODE_SYSTEM_ERROR, message)
+        return self.response_json(error, status_code)
 
     def on_finish(self):
         rlogger = logging.getLogger('request')

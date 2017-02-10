@@ -1,6 +1,6 @@
 from cement.core import controller
 
-from pyserver.common.const import *
+from pyserver.common.error import *
 from pyserver.common.command import PyserverController
 
 from .service import *

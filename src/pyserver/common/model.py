@@ -5,7 +5,7 @@ from pymongo.collection import Collection
 from bson import ObjectId
 
 from pyserver.config.db import MONGODB
-from .exception import PyserverException
+from .error import Error
 
 _mongo_databases = {}
 
@@ -125,7 +125,7 @@ class PyserverMongoModel(Collection):
     @staticmethod
     def _filter_none_value(doc):
         if not isinstance(doc, dict):
-            raise PyserverException("doc should be a dict")
+            raise Error(message="doc should be a dict")
 
         for k, v in list(doc.items()):
             if v is None:
@@ -143,15 +143,16 @@ class PyserverMongoModel(Collection):
                 continue
 
             if k not in cls._fields:
-                raise PyserverException("unexpected field '{}'".format(k))
+                raise Error(message="unexpected field '{}'".format(k))
 
             type_, _ = cls._fields[k]
             if type_ is not None and not isinstance(v, type_):
-                raise PyserverException(
-                    "field '{}' should be a '{}'".format(k, type_))
+                raise Error(
+                    message="field '{}' should be a '{}'".format(k, type_)
+                )
 
         if required:
             fields = [k for k, v in cls._fields.items() if v[1]]
             for v in fields:
                 if v not in doc:
-                    raise PyserverException("field '{}' is required".format(v))
+                    raise Error(message="field '{}' is required".format(v))

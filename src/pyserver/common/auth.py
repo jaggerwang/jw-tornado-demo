@@ -1,6 +1,6 @@
 import functools
 
-from pyserver.common.const import *
+from pyserver.common.error import *
 
 
 def authenticated():
@@ -9,7 +9,7 @@ def authenticated():
         @functools.wraps(method)
         def wrapper(self, *args, **kwargs):
             if not self.current_user:
-                return self.response_json(CODE_NOT_LOGINED)
+                return self.response_json(Error(ERROR_CODE_NOT_LOGINED))
 
             return method(self, *args, **kwargs)
         return wrapper
