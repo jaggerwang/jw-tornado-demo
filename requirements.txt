@@ -1,9 +1,0 @@
-tornado
-WTForms
-wtforms-tornado
-pymongo
-redis
-hiredis
-cement
-requests
-humanize

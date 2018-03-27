@@ -1,4 +1,4 @@
-# Jw-pyserver
+# jw-api-server-tornado-demo
 
 An python api server starter kit, deploy using docker.
 
@@ -20,28 +20,28 @@ You need install [docker engine](https://docs.docker.com/engine/installation/) f
 **run in dev mode with auto detecting code changing**
 
 ```
-> git clone git@github.com:jaggerwang/jw-pyserver.git && cd jw-pyserver
-> mkdir -p ~/data/projects/jw-pyserver # create directory for data volumes
+> git clone git@github.com:jaggerwang/jw-api-server-tornado-demo.git && cd jw-api-server-tornado-demo
+> mkdir -p ~/data/projects/jw-api-server-tornado-demo # create directory for data volumes
 > ./deploy.sh # pull images and run containers
 > ./fswatch.sh # watching code change, fswatch needed
 ```
 
-The data and log of server, mongodb and redis will be saved at host's path "~/data/projects/jw-pyserver", which mounted at container's path "/data".
+The data and log of server, mongodb and redis will be saved at host's path "~/data/projects/jw-api-server-tornado-demo", which mounted at container's path "/data".
 
 **run in prod mode**
 
 ```
-> git clone git@github.com:jaggerwang/jw-pyserver.git && cd jw-pyserver
-> mkdir -p /data/jw-pyserver # create directory for data volumes
+> git clone git@github.com:jaggerwang/jw-api-server-tornado-demo.git && cd jw-api-server-tornado-demo
+> mkdir -p /data/jw-api-server-tornado-demo # create directory for data volumes
 > ./deploy-prod.sh
 ```
 
-The data and log of server, mongodb and redis will be saved at host's path "/data/jw-pyserver", which mounted at container's path "/data".
+The data and log of server, mongodb and redis will be saved at host's path "/data/jw-api-server-tornado-demo", which mounted at container's path "/data".
 
 **build image of your own**
 
 ```
-> cd jw-pyserver
+> cd jw-api-server-tornado-demo
 > ./docker-build.sh
 ```
 
@@ -50,8 +50,8 @@ The data and log of server, mongodb and redis will be saved at host's path "/dat
 **help**
 
 ```
-> cd jw-pyserver
-> docker-compose -p jw-pyserver exec server ./src/manage.py -h
+> cd jw-api-server-tornado-demo
+> docker-compose -p jw-api-server-tornado-demo exec server ./src/manage.py -h
 usage: pyserver (sub-commands ...) [options ...] {arguments ...}
 
 Pyserver admin console.
@@ -76,16 +76,16 @@ optional arguments:
 **create mongodb index**
 
 ```
-> cd jw-pyserver
-> docker-compose -p jw-pyserver exec server ./src/manage.py create-mongodb-index
+> cd jw-api-server-tornado-demo
+> docker-compose -p jw-api-server-tornado-demo exec server ./src/manage.py create-mongodb-index
 ```
 When deploy, it will auto run this command to create mongodb index. So normally you do not need to do this by your own.
 
 **run unittest**
 
 ```
-> cd jw-pyserver
-> docker-compose -p jw-pyserver exec server ./src/manage.py test
+> cd jw-api-server-tornado-demo
+> docker-compose -p jw-api-server-tornado-demo exec server ./src/manage.py test
 ......
 ----------------------------------------------------------------------
 Ran 6 tests in 0.036s
@@ -111,7 +111,7 @@ Path|Method|Description
 
 **How to change image repository?**
 
-> Search and replace all "daocloud.io/jaggerwang/jw-pyserver" to your own.
+> Search and replace all "daocloud.io/jaggerwang/jw-api-server-tornado-demo" to your own.
 
 **How can I build the base images of this project, including go, mongodb and redis?**
 
