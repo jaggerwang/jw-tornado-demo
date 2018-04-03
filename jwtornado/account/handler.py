@@ -30,12 +30,14 @@ class RegisterUserHandler(handler.Handler):
         form = RegisterUserForm(self.request.arguments)
         if not form.validate():
             return self.response_json(
-                Error(ERROR_CODE_PARAM_WRONG, json.dumps(form.errors))
+                error.Error(error.ERROR_CODE_PARAM_WRONG,
+                            json.dumps(form.errors))
             )
 
         if not re.match(r'[a-z][a-z0-9_]{2,19}$', form.data['username'],
                         re.IGNORECASE):
-            return self.response_json(Error(ERROR_CODE_PARAM_WRONG))
+            return self.response_json(error.Error(
+                error.ERROR_CODE_PARAM_WRONG))
 
         user, error = register_user(**form.data)
         if error:
@@ -58,7 +60,8 @@ class EditUserHandler(handler.Handler):
         form = EditUserForm(self.request.arguments)
         if not form.validate():
             return self.response_json(
-                Error(ERROR_CODE_PARAM_WRONG, json.dumps(form.errors))
+                error.Error(error.ERROR_CODE_PARAM_WRONG,
+                            json.dumps(form.errors))
             )
 
         user, error = edit_user(self.current_user_id, form.data)
@@ -92,7 +95,8 @@ class LoginHandler(handler.Handler):
         form = LoginForm(self.request.arguments)
         if not form.validate():
             return self.response_json(
-                Error(ERROR_CODE_PARAM_WRONG, json.dumps(form.errors))
+                error.Error(error.ERROR_CODE_PARAM_WRONG,
+                            json.dumps(form.errors))
             )
 
         user, error = verify_password(

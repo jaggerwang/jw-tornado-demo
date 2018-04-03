@@ -71,7 +71,7 @@ class Handler(tornado.web.RequestHandler):
             data['code'] = error.code
             data['message'] = (
                 error.message if (config.DEBUG and error.message) else
-                MESSAGES.get(error.code, '')
+                err.MESSAGES.get(error.code, '')
             )
         data.update(kwargs)
 
@@ -95,7 +95,7 @@ class Handler(tornado.web.RequestHandler):
             data['code'] = error.code
             data['message'] = (
                 error.message if (config.DEBUG and error.message) else
-                MESSAGES.get(error.code, '')
+                err.MESSAGES.get(error.code, '')
             )
         data.update(kwargs)
 
@@ -113,7 +113,7 @@ class Handler(tornado.web.RequestHandler):
             message = traceback.format_exception(*kwargs['exc_info'])
         else:
             message = self._reason
-        error = Error(message)
+        error = err.Error(message)
 
         return self.response_json(error, status_code)
 

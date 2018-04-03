@@ -8,15 +8,12 @@ name = "pypi"
 [packages]
 
 tornado = "*"
+jw-pylib = "*"
 wtforms = "*"
 wtforms-tornado = "*"
-pymongo = "*"
 redis = "*"
-hiredis = "*"
 cement = "*"
-requests = "*"
-humanize = "*"
-jw-pylib = "*"
+pymongo = "*"
 
 
 [dev-packages]
