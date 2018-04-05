@@ -1,28 +1,35 @@
 version: "2"
 services:
-  server:
-    image: daocloud.io/jaggerwang/jw-pyserver
+  app:
+    image: jaggerwang.net/jw-tornado-demo:latest
     environment:
-      JWPY_ENV: production
-      JWPY_DEBUG: "false"
-      JWPY_LOGGING_HANDLER_LEVEL: INFO
-      JWPY_LOGGING_LOGGER_LEVEL: INFO
+      DEBUG: 'false'
+      PATH_APP: /app
+      PATH_DATA: /data
+      LOGGING_LOGGER_LEVEL: INFO
+      TORNADO_SERVER_PORT: 8888
+      TORNADO_SERVER_NUMPROCS: 0
+      SESSION_COOKIE_SECRET: 385aH8CvtcP51v985E56OgQryoIpzr61
+      SESSION_EXPIRES_SECONDS: 86400
+      MONGODB_HOST: mongodb
+      MONGODB_PORT: 27017
+      MONGODB_NAME: jw_tornado_demo
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DB: 0
     ports:
-      - 10500:8888
+    - 19900:8888
     volumes:
-      - /data/jw-pyserver/server:/data
-    depends_on:
-      - mongodb
-      - redis
+    - ~/data/jw-tornado-demo/app:/data
   mongodb:
-    image: daocloud.io/jaggerwang/mongodb
-    ports:
-      - 10510:27017
+    image: mongo:3
     volumes:
-      - /data/jw-pyserver/mongodb:/data
+    - ~/data/jw-tornado-demo/mongodb:/data/db
   redis:
-    image: daocloud.io/jaggerwang/redis
-    ports:
-      - 10520:6379
+    image: redis:4
+    command:
+    - redis-server
+    - --appendonly
+    - 'yes'
     volumes:
-      - /data/jw-pyserver/redis:/data
+    - ~/data/jw-tornado-demo/redis:/data

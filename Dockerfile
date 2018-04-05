@@ -1,19 +1,18 @@
-FROM daocloud.io/jaggerwang/python
+FROM python:3
 
 ENV APP_PATH=/app
 ENV DATA_PATH=/data
 
-WORKDIR /root
-RUN git clone https://github.com/jaggerwang/jw-pylib.git
-ENV PYTHONPATH=/root/jw-pylib/src:$PYTHONPATH
-
-ADD . $APP_PATH
 WORKDIR $APP_PATH
-RUN pip3 install -r requirements.txt
-ENV PYTHONPATH=$APP_PATH/src:$PYTHONPATH
+
+COPY ./Pipfile* ./
+RUN pip install pipenv
+RUN pipenv sync
+
+COPY . .
 
 VOLUME $DATA_PATH
 
 EXPOSE 8888
 
-CMD supervisord
+CMD pipenv run python -m jwtornadodemo.app

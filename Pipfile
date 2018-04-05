@@ -12,7 +12,6 @@ jw-pylib = "*"
 wtforms = "*"
 wtforms-tornado = "*"
 redis = "*"
-cement = "*"
 pymongo = "*"
 torndsession = "*"
 

@@ -15,7 +15,6 @@ TORNADO_SERVER_NUMPROCS = int(os.environ.get('TORNADO_SERVER_NUMPROCS', '0'))
 
 SESSION_COOKIE_SECRET = os.environ.get(
     'SESSION_COOKIE_SECRET', '4zi7D1)uw6VJ&Iz5@924y28Z@3@M3p!H')
-SESSION_EXPIRES_DAYS = int(os.environ.get('SESSION_EXPIRES_DAYS', '1'))
 SESSION_EXPIRES_SECONDS = int(os.environ.get('SESSION_EXPIRES_SECONDS',
                                              '86400'))
 
