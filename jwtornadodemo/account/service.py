@@ -26,7 +26,7 @@ def register_user(username, password, nickname, gender):
     try:
         id = UserModel().create(doc)
     except pymongo.errors.DuplicateKeyError:
-        return None, ServiceError(error.ERROR_CODE_RESOURCE_DUPLICATED)
+        return None, error.ServiceError(error.ERROR_CODE_RESOURCE_DUPLICATED)
 
     return user_info(id), None
 
@@ -34,7 +34,7 @@ def register_user(username, password, nickname, gender):
 def edit_user(id, doc):
     user = UserModel().find_one(id)
     if user is None:
-        return None, ServiceError(error.ERROR_CODE_RESOURCE_NOT_FOUND)
+        return None, error.ServiceError(error.ERROR_CODE_RESOURCE_NOT_FOUND)
 
     if doc.get('password') is not None:
         doc['password'] = pylib.security.password_hash(
@@ -43,7 +43,7 @@ def edit_user(id, doc):
     try:
         UserModel().modify({'_id': id}, doc)
     except pymongo.errors.DuplicateKeyError:
-        return None, ServiceError(error.ERROR_CODE_RESOURCE_DUPLICATED)
+        return None, error.ServiceError(error.ERROR_CODE_RESOURCE_DUPLICATED)
 
     return user_info(id), None
 
@@ -84,10 +84,10 @@ def user_list(keyword=None, skip=0, limit=10, sort='create_time_desc'):
 def verify_password(username, password):
     user = UserModel().find_one({'username': username})
     if user is None:
-        return None, ServiceError(error.ERROR_CODE_RESOURCE_NOT_FOUND)
+        return None, error.ServiceError(error.ERROR_CODE_RESOURCE_NOT_FOUND)
 
     password = pylib.security.password_hash(password, user['salt'])
     if password == user['password']:
         return user, None
     else:
-        return None, ServiceError(error.ERROR_CODE_USER_PASSWORD_WRONG)
+        return None, error.ServiceError(error.ERROR_CODE_USER_PASSWORD_WRONG)

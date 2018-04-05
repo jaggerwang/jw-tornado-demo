@@ -1,6 +1,6 @@
 import unittest
 
-from jwapiserver import config
+from jwtornadodemo import config
 
 
 class TestConfig(unittest.TestCase):

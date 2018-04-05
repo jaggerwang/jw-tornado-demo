@@ -17,16 +17,9 @@ app = tornado.web.Application([
     (r'/logout', account_handler.LogoutHandler, None, 'logout'),
     (r'/account/edit', account_handler.EditUserHandler),
     (r'/account/info', account_handler.AccountInfoHandler),
-], **config.APP)
+], **config.TORNADO['settings'], session=config.SESSION)
 
 if __name__ == '__main__':
-    tornado.options.define('port', default=8888, type=int,
-                           help='listen port')
-    tornado.options.define('numprocs', default=0, type=int,
-                           help='number of subprocess to fork')
-    tornado.options.options.logging = None
-    tornado.options.parse_command_line()
-
     if not os.path.exists(config.PATH_LOG):
         os.makedirs(config.PATH_LOG)
 
@@ -37,8 +30,8 @@ if __name__ == '__main__':
 
     server = tornado.httpserver.HTTPServer(app, xheaders=True)
     if config.DEBUG:
-        server.listen(tornado.options.options.port)
+        server.listen(config.TORNADO['server']['port'])
     else:
-        server.bind(tornado.options.options.port)
-        server.start(tornado.options.options.numprocs)
+        server.bind(config.TORNADO['server']['port'])
+        server.start(config.TORNADO['server']['numprocs'])
     tornado.ioloop.IOLoop.current().start()

@@ -3,7 +3,6 @@ import re
 
 from wtforms.validators import InputRequired, Optional, AnyOf
 from wtforms_tornado import Form
-
 from pylib.form.field import StringField
 from pylib.form.validator import DisplayWidth
 
@@ -64,7 +63,7 @@ class EditUserHandler(handler.Handler):
                             json.dumps(form.errors))
             )
 
-        user, error = edit_user(self.current_user_id, form.data)
+        user, error = edit_user(self.current_user['_id'], form.data)
         if error:
             return self.response_json(error)
 
@@ -77,7 +76,7 @@ class AccountInfoHandler(handler.Handler):
 
     @auth.authenticated()
     def get(self):
-        user = user_info(self.current_user_id)
+        user = user_info(self.current_user['_id'])
 
         self.response_json(user=UserVO(user)(self))
 
@@ -113,7 +112,7 @@ class LoginHandler(handler.Handler):
 class IsLoginedHandler(handler.Handler):
 
     def get(self):
-        user = self.session['user']
+        user = self.session.get('user', None)
 
         self.response_json(user=UserVO(user)(self))
 

@@ -14,10 +14,14 @@ wtforms-tornado = "*"
 redis = "*"
 cement = "*"
 pymongo = "*"
+torndsession = "*"
 
 
 [dev-packages]
 
+"autopep8" = "*"
+"pep8" = "*"
+pycodestyle = "*"
 
 
 [requires]

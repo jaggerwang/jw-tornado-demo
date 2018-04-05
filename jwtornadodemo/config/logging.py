@@ -13,55 +13,46 @@ LOGGING = {
         },
         'simple': {
             'format': '%(levelname)s %(asctime)s \'%(message)s\''
-        },
-        'raw': {
-            'format': '%(asctime)s %(message)s'
-        },
+        }
     },
     'handlers': {
         'null': {
-            'level': LOGGING_HANDLER_LEVEL,
+            'level': 'DEBUG',
             'class': 'logging.NullHandler',
         },
         'console': {
-            'level': LOGGING_HANDLER_LEVEL,
+            'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-            'formatter': 'simple'
+            'formatter': 'verbose'
         },
         'app': {
-            'level': LOGGING_HANDLER_LEVEL,
+            'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': os.path.join(PATH_LOG, 'app.log'),
             'formatter': 'verbose',
         },
         'command': {
-            'level': LOGGING_HANDLER_LEVEL,
+            'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': os.path.join(PATH_LOG, 'command.log'),
             'formatter': 'verbose',
         },
         'tornado_access': {
-            'level': LOGGING_HANDLER_LEVEL,
+            'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': os.path.join(PATH_LOG, 'tornado_access.log'),
             'formatter': 'simple'
         },
-        'tornado_error': {
-            'level': LOGGING_HANDLER_LEVEL,
+        'tornado': {
+            'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(PATH_LOG, 'tornado_error.log'),
-            'formatter': 'simple'
-        },
-        'request': {
-            'level': LOGGING_HANDLER_LEVEL,
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(PATH_LOG, 'request.log'),
-            'formatter': 'raw'
-        },
+            'filename': os.path.join(PATH_LOG, 'tornado.log'),
+            'formatter': 'verbose'
+        }
     },
     'loggers': {
         'app': {
-            'handlers': ['app'],
+            'handlers': ['app', 'console'],
             'level': LOGGING_LOGGER_LEVEL,
             'propagate': False
         },
@@ -71,21 +62,16 @@ LOGGING = {
             'propagate': False
         },
         'tornado.access': {
-            'handlers': ['tornado_access'],
+            'handlers': ['tornado_access', 'console'],
             'level': LOGGING_LOGGER_LEVEL
         },
         'tornado.application': {
-            'handlers': ['tornado_error'],
+            'handlers': ['tornado', 'console'],
             'level': LOGGING_LOGGER_LEVEL
         },
         'tornado.general': {
-            'handlers': ['tornado_error'],
+            'handlers': ['tornado', 'console'],
             'level': LOGGING_LOGGER_LEVEL
-        },
-        'request': {
-            'handlers': ['request'],
-            'level': LOGGING_LOGGER_LEVEL,
-            'propagate': False
-        },
+        }
     }
 }
