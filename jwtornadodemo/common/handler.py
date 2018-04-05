@@ -22,7 +22,7 @@ class Handler(torndsession.sessionhandler.SessionBaseHandler):
             self.request.arguments, self.request.headers))
 
     def get_current_user(self):
-        return self.session['user']
+        return self.session.get('user', None)
 
     def write_error(self, status_code, **kwargs):
         if self.settings.get('serve_traceback') and 'exc_info' in kwargs:

@@ -45,42 +45,6 @@ class RegisterUserHandler(handler.Handler):
         self.response_json(user=UserVO(user)(self))
 
 
-class EditUserForm(Form):
-    nickname = StringField(
-        validators=[Optional(), DisplayWidth(2, 20)])
-    gender = StringField(
-        validators=[Optional(), AnyOf(USER_GENDER_CHOICES)])
-
-
-class EditUserHandler(handler.Handler):
-
-    @auth.authenticated()
-    def post(self):
-        form = EditUserForm(self.request.arguments)
-        if not form.validate():
-            return self.response_json(
-                error.Error(error.ERROR_CODE_PARAM_WRONG,
-                            json.dumps(form.errors))
-            )
-
-        user, error = edit_user(self.current_user['_id'], form.data)
-        if error:
-            return self.response_json(error)
-
-        self.session['user'] = user
-
-        self.response_json(user=UserVO(user)(self))
-
-
-class AccountInfoHandler(handler.Handler):
-
-    @auth.authenticated()
-    def get(self):
-        user = user_info(self.current_user['_id'])
-
-        self.response_json(user=UserVO(user)(self))
-
-
 class LoginForm(Form):
     username = StringField(
         validators=[InputRequired(), DisplayWidth(3, 50)])
@@ -119,7 +83,44 @@ class IsLoginedHandler(handler.Handler):
 
 class LogoutHandler(handler.Handler):
 
+    @auth.authenticated()
     def get(self):
         del self.session['user']
 
         self.response_json()
+
+
+class EditUserForm(Form):
+    nickname = StringField(
+        validators=[Optional(), DisplayWidth(2, 20)])
+    gender = StringField(
+        validators=[Optional(), AnyOf(USER_GENDER_CHOICES)])
+
+
+class EditUserHandler(handler.Handler):
+
+    @auth.authenticated()
+    def post(self):
+        form = EditUserForm(self.request.arguments)
+        if not form.validate():
+            return self.response_json(
+                error.Error(error.ERROR_CODE_PARAM_WRONG,
+                            json.dumps(form.errors))
+            )
+
+        user, error = edit_user(self.current_user['_id'], form.data)
+        if error:
+            return self.response_json(error)
+
+        self.session['user'] = user
+
+        self.response_json(user=UserVO(user)(self))
+
+
+class AccountInfoHandler(handler.Handler):
+
+    @auth.authenticated()
+    def get(self):
+        user = user_info(self.current_user['_id'])
+
+        self.response_json(user=UserVO(user)(self))
