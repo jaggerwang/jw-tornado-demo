@@ -68,7 +68,7 @@ $ curl http://localhost:8888/isLogined
 
 For full api list, check the app module.
 
-## Deploy with docker
+## Deploy
 
 ### Install docker
 
@@ -123,7 +123,7 @@ Use `docker-compose up` command to run app image and it's dependency images, inc
 $ docker-compose up
 ```
 
-Your should change the environment values to your own, such as the app service's image name and all services's volume path.
+Your should modify `docker-compose.yml` as your own need, such as the app service's image name and all services's volume path.
 
 `docker-compose.yml`
 
