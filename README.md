@@ -165,6 +165,6 @@ services:
     - ~/data/jw-tornado-demo/redis:/data
 ```
 
-### Other references
+## References
 
-* [天火的技术博客](https://blog.jaggerwang.net/)
+* [Tornado API 服务开发](https://blog.jaggerwang.net/tornado-docker-python-api-fu-wu-kai-fa/)
